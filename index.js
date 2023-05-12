@@ -1,0 +1,41 @@
+'use strict';
+
+const express = require('express');
+const expressHandlebars = require('express-handlebars');
+
+const app = express();
+const port = process.env.PORT || 5000;
+
+app.use(express.static(__dirname + '/bootstrap-ecommerce-template'));
+// app.get('/', (req, res) =>{res.send("Hello")});
+app.engine('hbs', expressHandlebars.engine({
+    layoutsDir: __dirname + '/views/layouts',
+    partialsDir: __dirname + '/views/partials',
+    extname: 'hbs',
+    defaultLayout: 'layout',
+    runtimeOptions:{
+        allowProtoPropertiesByDefault: true,
+    }
+}));
+
+app.set('view engine', 'hbs');
+
+//route
+app.use('/', require('./routes/indexRouter'));
+
+app.use((err, req, res, next) => {
+    const page = ['cart', 'checkout', 'contact', 'login', 'my-account', 'product-detail', 'product-list', 'wishlist', 'index'];
+    if(page.includes(req.params.page)) {
+        next();
+    } else {
+        res.status(404).render('error', { message: 'Page not found' });
+        console.error('Page not found');
+    }
+});
+
+app.use((err, req, res, next) => {
+    console.error('Internal error');
+    res.status(500).send('Internal error');
+});
+
+app.listen(port, () => console.log(`Listening on port ${port}`));
