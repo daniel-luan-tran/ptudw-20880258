@@ -7,7 +7,13 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.static(__dirname + '/bootstrap-ecommerce-template'));
-// app.get('/', (req, res) =>{res.send("Hello")});
+app.get('/createTables', (req, res) => {
+    let model = require('./database/models');
+    model.sequelize.sync().then(() => {
+        res.send('Tables created');
+    });
+})
+
 app.engine('hbs', expressHandlebars.engine({
     layoutsDir: __dirname + '/views/layouts',
     partialsDir: __dirname + '/views/partials',

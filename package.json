@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start" : "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed:Brand": "sequelize seed:generate --name Brand",
+    "seed:Category": "sequelize seed:generate --name Category",
+    "dbseed:all" : "sequelize db:seed:all",
+    "sequelize:init" : "sequelize init"
   },
   "keywords": [],
   "author": "",
