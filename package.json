@@ -9,7 +9,8 @@
     "seed:Brand": "sequelize seed:generate --name Brand",
     "seed:Category": "sequelize seed:generate --name Category",
     "dbseed:all" : "sequelize db:seed:all",
-    "sequelize:init" : "sequelize init"
+    "sequelize:init" : "sequelize init",
+    "db:seedfile" : "sequelize db:seed --seed 9-Star.js"
   },
   "keywords": [],
   "author": "",

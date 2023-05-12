@@ -2,6 +2,7 @@
 
 const express = require('express');
 const expressHandlebars = require('express-handlebars');
+const {createStarList} = require('./controllers/handlebarsHelper');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -21,6 +22,9 @@ app.engine('hbs', expressHandlebars.engine({
     defaultLayout: 'layout',
     runtimeOptions:{
         allowProtoPropertiesByDefault: true,
+    },
+    helpers: {
+        createStarList
     }
 }));
 
