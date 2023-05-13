@@ -29,26 +29,19 @@ app.engine('hbs', expressHandlebars.engine({
 }));
 
 app.set('view engine', 'hbs');
-
 //route
 app.use('/', require('./routes/indexRouter'));
+app.use('/products', require('./routes/productsRouter'));
 
-
-/// Optional
-app.use((err, req, res, next) => {
-    const page = ['cart', 'checkout', 'contact', 'login', 'my-account', 'product-detail', 'product-list', 'wishlist', 'index'];
-    if(page.includes(req.params.page)) {
-        next();
-    } else {
-        res.status(404).render('error', { message: 'Page not found' });
-        console.error('Page not found');
-    }
+app.use((req, res, next) => {
+    res.status(404).render('error', { message: 'Page not found' });
 });
 
-app.use((err, req, res, next) => {
-    console.error('Internal error');
-    res.status(500).send('Internal error');
-});
-/// Optional
+/// Optional: This will cover the error
+// app.use((err, req, res, next) => {
+//     console.error('Internal error');
+//     res.status(500).send('Internal error');
+// });
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

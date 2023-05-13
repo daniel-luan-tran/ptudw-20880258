@@ -36,8 +36,11 @@ controller.showHomePage = async (req, res) => {
     res.render('index', { _brands });
 };
 
-controller.showPage = (req, res) => {
-    res.render(req.params.page);
+controller.showPage = (req, res, next) => {
+    const page = ['cart', 'checkout', 'contact', 'login', 'my-account', 'product-detail', 'product-list', 'wishlist', 'index'];
+    if (page.includes(req.params.page))
+        return res.render(req.params.page);
+    next();
 };
 
 module.exports = controller;
