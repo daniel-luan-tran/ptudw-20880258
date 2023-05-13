@@ -7,3 +7,5 @@
 # "dbseed:all" : "sequelize db:seed:all --config config/config.json --seeders-path seeders",
 # "db:seedfile" : "sequelize db:seed --seed seeder_file.js --config config/config.json --seeders-path seeders"
 # run: nodemon
+
+# index.js <= indexRouter.js <= indexController.js (render to view) <= models + sequelize

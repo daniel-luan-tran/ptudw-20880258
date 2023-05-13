@@ -33,6 +33,8 @@ app.set('view engine', 'hbs');
 //route
 app.use('/', require('./routes/indexRouter'));
 
+
+/// Optional
 app.use((err, req, res, next) => {
     const page = ['cart', 'checkout', 'contact', 'login', 'my-account', 'product-detail', 'product-list', 'wishlist', 'index'];
     if(page.includes(req.params.page)) {
@@ -47,5 +49,6 @@ app.use((err, req, res, next) => {
     console.error('Internal error');
     res.status(500).send('Internal error');
 });
+/// Optional
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
