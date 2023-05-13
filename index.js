@@ -8,8 +8,8 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.static(__dirname + '/bootstrap-ecommerce-template'));
-app.get('/createTables', (req, res) => {
-    let model = require('./database/models');
+app.get('/sync', (req, res) => {
+    let model = require('./models');
     model.sequelize.sync().then(() => {
         res.send('Tables created');
     });

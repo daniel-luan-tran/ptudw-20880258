@@ -1,7 +1,7 @@
 'use strict';
 
 const controller = {};
-const models = require('../database/models');
+const models = require('../models');
 
 controller.showHomePage = async (req, res) => {
     console.log("Home page");

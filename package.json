@@ -8,9 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed:Brand": "sequelize seed:generate --name Brand",
     "seed:Category": "sequelize seed:generate --name Category",
-    "dbseed:all" : "sequelize db:seed:all --config database/config/config.json --seeders-path database/seeders",
     "sequelize:init" : "sequelize init",
-    "db:seedfile" : "sequelize db:seed --seed seeder_file.js --config database/config/config.json --seeders-path database/seeders"
+    "dbseed:all" : "sequelize db:seed:all --config config/config.json --seeders-path seeders",
+    "db:seedfile" : "sequelize db:seed --seed seeder_file.js --config config/config.json --seeders-path seeders"
   },
   "keywords": [],
   "author": "",
