@@ -2,6 +2,8 @@
 
 const controller = {};
 const models = require('../models');
+const sequelize = require('sequelize');
+const Op = sequelize.Op;
 
 controller.getData = async (req, res, next) => {
     let tags = await models.Tag.findAll({
@@ -33,6 +35,7 @@ controller.show = async (req, res) => {
     let categoryId = parseInt(req.query.categoryId) || 0;
     let brandId = parseInt(req.query.brandId) || 0;
     let tagId = parseInt(req.query.tagId) || 0;
+    let keyword = req.query.keyword || "";
 
     let productsOption = {
         attributes: ['id', 'name', 'imagePath', 'stars', 'price', 'oldPrice', 'categoryId'],
@@ -49,6 +52,12 @@ controller.show = async (req, res) => {
             model: models.Tag,
             where: {id: tagId}
         }]
+    }
+
+    if (keyword.trim() != "") {
+        productsOption.where.name = {
+            [Op.iLike]: `%${keyword}%`
+        }
     }
 
     let products = await models.Product.findAll(productsOption);
