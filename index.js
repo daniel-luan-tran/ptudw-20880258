@@ -7,7 +7,7 @@ const {createStarList} = require('./controllers/handlebarsHelper');
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(express.static(__dirname + '/bootstrap-ecommerce-template'));
+app.use(express.static(__dirname));
 app.get('/sync', (req, res) => {
     let model = require('./models');
     model.sequelize.sync().then(() => {

@@ -1,28 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>E Shop - Bootstrap Ecommerce Template</title>
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <meta content="Bootstrap Ecommerce Template" name="keywords">
-        <meta content="Bootstrap Ecommerce Template Free Download" name="description">
-
-        <!-- Favicon -->
-        <link href="img/favicon.ico" rel="icon">
-
-        <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
-
-        <!-- CSS Libraries -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href="lib/slick/slick.css" rel="stylesheet">
-        <link href="lib/slick/slick-theme.css" rel="stylesheet">
-
-        <!-- Template Stylesheet -->
-        <link href="css/style.css" rel="stylesheet">
-    </head>
-
     <body>
         <!-- Breadcrumb Start -->
         <div class="breadcrumb-wrap">
@@ -42,29 +17,22 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-9">
+                        {{#with product}}
                         <div class="row align-items-center product-detail-top">
                             <div class="col-md-5">
                                 <div class="product-slider-single">
-                                    <img src="img/product-1.png" alt="Product Image">
-                                    <img src="img/product-2.png" alt="Product Image">
-                                    <img src="img/product-3.png" alt="Product Image">
+                                    {{#each Images}}
+                                    <img src="{{imagePath}}" alt="{{name}}">
+                                    {{/each}}
                                 </div>
                             </div>
                             <div class="col-md-7">
                                 <div class="product-content">
-                                    <div class="title"><h2>Phasellus Gravida</h2></div>
-                                    <div class="ratting">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                    <div class="price">$22 <span>$25</span></div>
+                                    <div class="title"><h2>{{name}}</h2></div>
+                                    {{{ createStarList stars }}}
+                                    <div class="price">{{price}}<span>{{oldPrice}}</span></div>
                                     <div class="details">
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non.
-                                        </p>
+                                        <p>{{summary}}</p>
                                     </div>
 
                                     <div class="quantity">
@@ -102,33 +70,21 @@
                                     <div id="description" class="container tab-pane active"><br>
                                         <h4>Product description</h4>
                                         <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non. Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien eget arcu rhoncus scelerisque. Suspendisse sit amet neque neque. Praesent suscipit et magna eu iaculis. Donec arcu libero, commodo ac est a, malesuada finibus dolor. Aenean in ex eu velit semper fermentum. In leo dui, aliquet sit amet eleifend sit amet, varius in turpis. Maecenas fermentum ut ligula at consectetur. Nullam et tortor leo. 
+                                            {{description}}
                                         </p>
                                     </div>
                                     <div id="specification" class="container tab-pane fade"><br>
                                         <h4>Product specification</h4>
-                                        <ul>
-                                            <li>Lorem ipsum dolor sit amet</li>
-                                            <li>Lorem ipsum dolor sit amet</li>
-                                            <li>Lorem ipsum dolor sit amet</li>
-                                            <li>Lorem ipsum dolor sit amet</li>
-                                            <li>Lorem ipsum dolor sit amet</li>
-                                        </ul>
+                                        <p>{{specification}}</p>
                                     </div>
                                     <div id="reviews" class="container tab-pane fade"><br>
+                                        {{#each Reviews}}
                                         <div class="reviews-submitted">
-                                            <div class="reviewer">Phasellus Gravida - <span>01 Jan 2020</span></div>
-                                            <div class="ratting">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                            <p>
-                                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
-                                            </p>
+                                            <div class="reviewer">{{User.firstName}} {{User.lastName}} - <span>{{createdAt}}</span></div>
+                                            {{{createStarList stars}}}
+                                            <p>{{review}}</p>
                                         </div>
+                                        {{/each}}
                                         <div class="reviews-submit">
                                             <h4>Give your Review:</h4>
                                             <div class="ratting">
@@ -157,7 +113,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+                        {{/with}}
                         <div class="container">
                             <div class="section-header">
                                 <h3>Related Products</h3>
@@ -296,7 +252,7 @@
                         </div>
                     </div>
                     
-                    {{{> right-column}}}
+                    {{> right-column}}
                 </div>
             </div>
         </div>
@@ -317,4 +273,3 @@
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
     </body>
-</html>
