@@ -132,9 +132,30 @@ controller.showDetails = async (req, res) => {
             include: [{
                 model: models.User
             }]
-        },]
+        },{
+            model: models.Tag
+        }]
     });
     res.locals.product = product;
+
+    // let tagIds = [];
+    // product.Tags.forEach(tag => {
+    //     tagIds.push(tag.id);
+    // });
+
+    let tagIds = [...product.Tags].map(tag => tag.id);
+
+
+    let relatedProducts =  await models.Product.findAll({
+        include: [{
+            model: models.Tag,
+            where: {
+                id: {[Op.in]: tagIds}
+            }
+        }]
+    })
+    res.locals.relatedProducts = relatedProducts;
+
     res.render('product-detail');
 }
 
