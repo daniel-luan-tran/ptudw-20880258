@@ -5,6 +5,24 @@ const models = require('../models');
 const sequelize = require('sequelize');
 const Op = sequelize.Op;
 
+function removeParam(key, sourceURL) {
+    var rtn = sourceURL.split("?")[0],
+        param,
+        params_arr = [],
+        queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
+    if (queryString !== "") {
+        params_arr = queryString.split("&");
+        for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+            param = params_arr[i].split("=")[0];
+            if (param === key) {
+                params_arr.splice(i, 1);
+            }
+        }
+        if (params_arr.length) rtn = rtn + "?" + params_arr.join("&");
+    }
+    return rtn;
+}
+
 controller.getData = async (req, res, next) => {
     let tags = await models.Tag.findAll({
         include: [{
@@ -36,6 +54,8 @@ controller.show = async (req, res) => {
     let brandId = parseInt(req.query.brandId) || 0;
     let tagId = parseInt(req.query.tagId) || 0;
     let keyword = req.query.keyword || "";
+    let sort = ['price', 'newest', 'popular'].includes(req.query.sort) ? req.query.sort : "price";
+    let page = Math.max(1, parseInt(req.query.page)) || 1;
 
     let productsOption = {
         attributes: ['id', 'name', 'imagePath', 'stars', 'price', 'oldPrice', 'categoryId'],
@@ -60,9 +80,41 @@ controller.show = async (req, res) => {
         }
     }
 
-    let products = await models.Product.findAll(productsOption);
+    switch (sort) {
+        case "newest":
+            productsOption.order = [['createdAt', 'DESC']]
+            break;
+            
+        case "price":
+            productsOption.order = [['price', 'DESC']]
+            break;
+            
+        case "popular":
+            productsOption.order = [['stars', 'DESC']]
+            break;
+    
+        default:
+            break;
+    }
 
-    res.locals.products = products;
+    res.locals.sort = sort;
+    res.locals.originalUrl = removeParam('sort', req.originalUrl)
+
+    //Pagination
+    const limit = 6;
+    productsOption.limit = limit;
+    productsOption.offset = limit * (page - 1);
+
+    let { rows, count} = await models.Product.findAndCountAll(productsOption);
+
+    res.locals.pagination = {
+        page: page,
+        limit: limit,
+        totalRows: count,
+        queryParams: req.query
+    }
+
+    res.locals.products = rows;
 
     console.log('render product-list');
     res.render('product-list');
