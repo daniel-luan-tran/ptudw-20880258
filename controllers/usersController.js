@@ -59,7 +59,7 @@ controller.placeorders = async (req, res) => {
 async function saveOrders (req, res, status) {
     let { items, ...others } = req.session.cart.getCart();
     let order = await models.Order.create({
-        userId,
+        userId: 1,
         ...others,
         status
     });
@@ -67,7 +67,7 @@ async function saveOrders (req, res, status) {
     let orderDetails = [];
     items.forEach(item => {
         orderDetails.push({
-            orderId: order.orderId,
+            orderId: order.id,
             productId: item.product.id,
             price: item.product.price,
             quantity: item.quantity,
