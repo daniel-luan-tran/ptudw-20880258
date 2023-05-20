@@ -17,4 +17,66 @@ controller.checkout = async (req, res) => {
     res.redirect('/products');
 }
 
+controller.placeorders = async (req, res) => {
+    let userId = 1;
+    let addressId =  req.body.addressId || 0;
+    let address = await models.Address.findByPk(addressId);
+    if (!address) {
+        address = await models.Address.create({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            mobile: req.body.mobile,
+            address: req.body.address,
+            country: req.body.country,
+            city: req.body.city,
+            state: req.body.state,
+            zipCode: req.body.zipCode,
+            isDefault: req.body.isDefault,
+            userId: userId
+        });
+    }
+
+    let cart = req.session.cart;
+    cart.paymentMethod = req.body.payment;
+    cart.shippingAddress = `${address.firstName} ${address.lastName}, Email: ${address.email}, 
+        Address: ${address.address}, ${address.city}, ${address.country}, ${address.state}, ${address.zipCode}`;
+
+    switch (req.body.payment) {
+        case 'PAYPAL':
+            saveOrders(req, res, 'PAID');
+            break;
+        case 'COD':
+            saveOrders(req, res, 'UNPAID');
+            break;
+    
+        default:
+            res.redirect('/users/checkout');
+            break;
+    }
+}
+
+async function saveOrders (req, res, status) {
+    let { items, ...others } = req.session.cart.getCart();
+    let order = await models.Order.create({
+        userId,
+        ...others,
+        status
+    });
+
+    let orderDetails = [];
+    items.forEach(item => {
+        orderDetails.push({
+            orderId: order.orderId,
+            productId: item.product.id,
+            price: item.product.price,
+            quantity: item.quantity,
+            total: item.total
+        })
+    })
+    await models.OrderDetail.bulkCreate(orderDetails);
+    req.session.cart.clear();
+    return res.render('error', {message: 'Thank you for your order'});
+}
+
 module.exports = controller;
