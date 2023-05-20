@@ -14,6 +14,7 @@ async function addCart (id, quantity) {
 }
 
 async function updateCart (id, quantity) {
+    debugger
     if (quantity > 0) {
         let res = await fetch("/products/cart", {
             method: 'PUT',
