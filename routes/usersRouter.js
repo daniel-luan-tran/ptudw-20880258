@@ -33,4 +33,8 @@ router.get('/my-account', (req, res) => {
     res.render('my-account');
 });
 
+router.get('/wishlist', (req, res) => {
+    res.render('wishlist');
+});
+
 module.exports = router;
