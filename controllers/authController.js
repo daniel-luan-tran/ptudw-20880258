@@ -4,7 +4,11 @@ const controller = {};
 const passport = require('./passport');
 
 controller.show = (req, res) => {
-    res.render('login', {loginMessage: req.flash('loginMessage')});
+    res.render('login', {
+        loginMessage: req.flash('loginMessage'), 
+        registerMessage: req.flash('registerMessage'),
+        reqUrl: req.query.reqUrl
+    });
 }
 
 controller.login = (req, res, next) => {
@@ -37,6 +41,26 @@ controller.logout = (req, res, next) => {
         req.session.cart = cart;
         res.redirect('/');
     })
+};
+
+controller.register = (req, res, next) => {
+    let reqUrl = req.body.reqUrl ? req.body.reqUrl : '/users/my-account';
+    let cart = req.session.cart;
+    passport.authenticate('local-register', (error, user) => {
+        if (error) {
+            return next(error);
+        }
+        if (!user) {
+            return res.redirect(`/users/login?reqUrl=${reqUrl}`);
+        }
+        req.logIn(user, (error) => {
+            if (error) {
+                return next(error);
+            }
+            req.session.cart = cart;
+            res.redirect(reqUrl);
+        })
+    })(req, res, next);
 };
 
 module.exports = controller;
