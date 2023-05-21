@@ -24,15 +24,15 @@ passport.deserializeUser(async (id, done) => {
 
 // Ham xac thuc nguoi dung khi dang nhap
 passport.use('local-login', new LocalStrategy({
-    userNameField: 'email', // ten dang nhap la email
+    usernameField: 'email', // ten dang nhap la email
     passwordField: 'password',
-    passReqToCallBack: true // cho phep truyen req vao callback de kiem tra user da dang nhap chua
+    passReqToCallback: true // cho phep truyen req vao callback de kiem tra user da dang nhap chua
 }, async (req, email, password, done) => {
     if( email) {
         email = email.toLowerCase();
     }
     try {
-        if (!req.user) { // Neu user chau dang nhap
+        if (!req.user) { // Neu user chua dang nhap
             let user = await models.User.findOne({ where: {email}})
             if (!user) {
                 return done(null, false, req.flash('loginMessage', 'Email does not exist!'));
@@ -40,6 +40,7 @@ passport.use('local-login', new LocalStrategy({
             if(bcrypt.compareSync(password, user.password)) { // Neu mat khau khong dung
                 return done(null, false, req.flash('loginMessage', 'Invalid password'));
             }
+            return done(null, user);
         }
         // bo qua dang nhap
         done(null, req.user);
