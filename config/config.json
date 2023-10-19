@@ -17,7 +17,7 @@
     "username": "ptudwprojectdb",
     "password": "GzHOIdDkmpIsPiY6DPyeKoUeKeN5mFMy",
     "database": "ptudwprojectdb_0m81",
-    "host": "dpg-ckod5m0ujous73ch1kd0-a.singapore-postgres.render.com/ptudwprojectdb_0m81",
+    "host": "dpg-ckod5m0ujous73ch1kd0-a.singapore-postgres.render.com",
     "dialect": "postgres",
     "dialectOptions": {
       "ssl": {
